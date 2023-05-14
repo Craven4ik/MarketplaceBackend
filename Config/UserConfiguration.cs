@@ -8,10 +8,14 @@ namespace MarketplaceBackend.Config
     {
         public void Configure(EntityTypeBuilder<User> builder)
         {
+            builder.ToTable("AspNetUsers");
+
             builder.HasMany(c => c.Items)
                 .WithOne(c => c.User)
                 .HasForeignKey(p => p.OwnerEmail)
                 .HasPrincipalKey(p => p.Email);
+
+            //builder.Property(p => p.Desc)
         }
     }
 }

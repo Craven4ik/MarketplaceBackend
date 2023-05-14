@@ -11,7 +11,7 @@ namespace MarketplaceBackend.Data
             : base(options)
         {
             modelBuilder.ApplyConfigurationsFromAssembly(GetType().Assembly);
-            Database.EnsureCreated();
+            //Database.EnsureCreated();
         }
 
         public DbSet<User> Users { get; set; }

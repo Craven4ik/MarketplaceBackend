@@ -11,7 +11,7 @@ namespace MarketplaceBackend.Config
             builder.HasKey(x => x.Id);
             builder.Property(x => x.Id).ValueGeneratedOnAdd();
             builder.HasOne(c => c.User)
-                .WithMany(c => c.Items)
+                .WithMany(c => c.Items) //WithMany()
                 .HasForeignKey(p => p.OwnerEmail)
                 .HasPrincipalKey(p => p.Email);
         }

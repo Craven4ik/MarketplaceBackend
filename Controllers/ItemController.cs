@@ -1,49 +1,46 @@
 ﻿using MarketPlace.Models;
-using MarketplaceBackend.Data;
-using Microsoft.AspNetCore.Http;
+using MarketplaceBackend.DTO;
+using MarketplaceBackend.Services;
+using MarketplaceBackend.Services.IServices;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MarketplaceBackend.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    [Authorize]
     public class ItemController : Controller
     {
-        private readonly UserDbContext _userDbContext;
-        
-        public ItemController(UserDbContext userDbContext)
+        private readonly IItemService _itemService;
+
+        public ItemController(IItemService itemService)
         {
-            _userDbContext = userDbContext;
+            _itemService = itemService;
         }
 
         [HttpGet]
         public List<Item> GetItems()
         {
-            return _userDbContext.Items.ToList();
+            return _itemService.GetItems();
         }
 
         [HttpDelete]
         public void Delete(int id)
         {
-            var item = _userDbContext.Items.FirstOrDefault(p => p.Id == id);
-            _userDbContext.Items.Remove(item);
-            _userDbContext.SaveChanges();
+            _itemService.Delete(id);
+        }
+
+        [HttpPost("CreateItem")]
+        public Item CreateItem(ItemDTO _item)
+        {
+            return _itemService.CreateItem(_item);
         }
 
         [HttpPost]
-        public Item CreateItem(Item item)
+        public Item UpdateItem(ItemDTO _item)
         {
-            _userDbContext.Items.Add(item);
-            _userDbContext.SaveChanges();
-            return item;
-        }
-
-        [HttpPost]
-        public Item UpdateItem(Item item)
-        {
-            _userDbContext.Items.Update(item);
-            _userDbContext.SaveChanges();
-            return item;
+            return _itemService.UpdateItem(_item);
         }
     }
 }

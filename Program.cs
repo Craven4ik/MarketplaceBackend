@@ -2,6 +2,8 @@ using MarketPlace.Helpers;
 using MarketPlace.Models;
 using MarketplaceBackend.Config;
 using MarketplaceBackend.Data;
+using MarketplaceBackend.Services;
+using MarketplaceBackend.Services.IServices;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
@@ -18,7 +20,8 @@ var connectionStringUsers = builder.Configuration.GetConnectionString("DB");
 builder.Services.AddDbContext<UserDbContext>(options => options.UseNpgsql(connectionStringUsers));
 builder.Services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<UserDbContext>();
 builder.Services.AddScoped<Microsoft.EntityFrameworkCore.ModelBuilder>();
-
+builder.Services.AddScoped<IItemService, ItemService>();
+builder.Services.AddScoped<IUserService, UserService>();
 
 var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 builder.Services.AddCors(options =>
@@ -26,9 +29,10 @@ builder.Services.AddCors(options =>
     options.AddPolicy(name: MyAllowSpecificOrigins,
             policy =>
             {
-                policy.WithOrigins("http://localhost:3000")
+                policy.WithOrigins("*")
                     .AllowAnyHeader()
-                    .AllowAnyMethod();
+                    .AllowAnyMethod()
+                    .AllowAnyOrigin();
             }
         );
 });
@@ -59,6 +63,8 @@ builder.Services.AddAuthentication(options =>
         ValidateIssuerSigningKey = true
     };
 });
+
+builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddControllers().AddJsonOptions(x =>
                 x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);

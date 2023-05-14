@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace MarketplaceBackend.Migrations
 {
     [DbContext(typeof(UserDbContext))]
-    [Migration("20230514084553_FirstMigration")]
+    [Migration("20230514122137_FirstMigration")]
     partial class FirstMigration
     {
         /// <inheritdoc />
@@ -269,10 +269,6 @@ namespace MarketplaceBackend.Migrations
             modelBuilder.Entity("MarketPlace.Models.User", b =>
                 {
                     b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUser");
-
-                    b.Property<string>("Password")
-                        .IsRequired()
-                        .HasColumnType("text");
 
                     b.HasDiscriminator().HasValue("User");
                 });

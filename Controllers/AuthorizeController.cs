@@ -34,7 +34,7 @@ namespace MarketPlace.Controllers
         }
 
         [HttpPost("Register")]
-        public async Task<IActionResult> Register(User paramUser)
+        public async Task<IActionResult> Register(UserDTO paramUser)
         {
             var user = new IdentityUser { UserName = paramUser.UserName, Email = paramUser.Email };
 
