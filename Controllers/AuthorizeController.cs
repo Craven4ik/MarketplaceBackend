@@ -1,10 +1,13 @@
 ﻿using MarketPlace.Helpers;
 using MarketPlace.Models;
+using MarketplaceBackend.DTO;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using System.Data.SqlTypes;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 
@@ -17,18 +20,23 @@ namespace MarketPlace.Controllers
         private readonly UserManager<IdentityUser> _userManager;
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly JWTSettings _options;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public AuthorizeController(UserManager<IdentityUser> user, SignInManager<IdentityUser> signIn, IOptions<JWTSettings> optAccess)
+        public AuthorizeController(UserManager<IdentityUser> user,
+            SignInManager<IdentityUser> signIn,
+            IOptions<JWTSettings> optAccess,
+            IHttpContextAccessor httpContextAccessor)
         {
             _userManager = user;
             _signInManager = signIn;
             _options = optAccess.Value;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         [HttpPost("Register")]
         public async Task<IActionResult> Register(User paramUser)
         {
-            var user = new IdentityUser { UserName = paramUser.Name, Email = paramUser.Email };
+            var user = new IdentityUser { UserName = paramUser.UserName, Email = paramUser.Email };
 
             var result = await _userManager.CreateAsync(user, paramUser.Password);
 
@@ -68,9 +76,12 @@ namespace MarketPlace.Controllers
         }
 
         [HttpPost("SignIn")]
-        public async Task<IActionResult> SignIn(User paramUser)
+        public async Task<IActionResult> SignIn(UserDTO paramUser)
         {
             var user = await _userManager.FindByEmailAsync(paramUser.Email);
+
+            if (user == null)
+                return BadRequest("Error");
 
             var result = await _signInManager.PasswordSignInAsync(user, paramUser.Password, false, false);
 
@@ -78,11 +89,28 @@ namespace MarketPlace.Controllers
             {
                 IEnumerable<Claim> claims = await _userManager.GetClaimsAsync(user);
                 var token = GetToken(user, claims);
-                
+
                 return Ok(token);
             }
 
-            return BadRequest();
+            return BadRequest("Error");
+        }
+
+        [HttpGet("CurrentUser")]
+        [Authorize]
+        public IActionResult GetCurUser()
+        {
+            var token = _httpContextAccessor.HttpContext.Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
+            Console.WriteLine(token);
+
+            var handler = new JwtSecurityTokenHandler();
+            var jwtToken = handler.ReadJwtToken(token);
+
+            var identity = new ClaimsIdentity(jwtToken.Claims);
+            var user = new ClaimsPrincipal(identity);
+
+            // Здесь user содержит информацию об авторизованном пользователе
+            return Ok(user);
         }
     }
 }

@@ -1,18 +1,15 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Identity;
+using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
 namespace MarketPlace.Models
 {
-    public class User
+    public class User : IdentityUser
     {
-        [Required]
-        [DataType(DataType.EmailAddress)]
         public string Email { get; set; }
-
-        [Required]
-        //[JsonIgnore]
         public string Password { get; set; }
 
-        public string? Name { get; set; }
+        public string UserName { get; set; }
+        public virtual ICollection<Item> Items { get; set; } = new List<Item>();
     }
 }

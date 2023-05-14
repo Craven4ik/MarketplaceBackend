@@ -1,10 +1,14 @@
 using MarketPlace.Helpers;
 using MarketPlace.Models;
+using MarketplaceBackend.Config;
+using MarketplaceBackend.Data;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,6 +17,8 @@ var builder = WebApplication.CreateBuilder(args);
 var connectionStringUsers = builder.Configuration.GetConnectionString("DB");
 builder.Services.AddDbContext<UserDbContext>(options => options.UseNpgsql(connectionStringUsers));
 builder.Services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<UserDbContext>();
+builder.Services.AddScoped<Microsoft.EntityFrameworkCore.ModelBuilder>();
+
 
 var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 builder.Services.AddCors(options =>
@@ -54,7 +60,8 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
-builder.Services.AddControllersWithViews();
+builder.Services.AddControllers().AddJsonOptions(x =>
+                x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
 
 var app = builder.Build();
 

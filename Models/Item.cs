@@ -10,5 +10,7 @@ namespace MarketPlace.Models
         public int Price { get; set; }
         public string Image { get; set; } = null!;
         public string Description { get; set; } = null!;
+        public string OwnerEmail { get; set; }
+        public virtual User User { get; set; }
     }
 }
