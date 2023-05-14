@@ -15,9 +15,13 @@ namespace MarketplaceBackend.Services
         }
         public User FindUserByEmail(string Email)
         {
-            var sql = _userDbContext.Users.Where(p => p.Email == Email).ToQueryString();
+            //var sql = _userDbContext.Users.Where(p => p.Email == Email).ToQueryString();
             var user = _userDbContext.Users.FirstOrDefault(p => p.Email == Email);
-            return user;
+            return new User
+            {
+                UserName = user.UserName,
+                Email = user.Email,
+            };
         }
     }
 }

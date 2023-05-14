@@ -2,7 +2,7 @@
 using MarketplaceBackend.Data;
 using MarketplaceBackend.DTO;
 using MarketplaceBackend.Services.IServices;
-using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace MarketplaceBackend.Services
 {
@@ -18,7 +18,7 @@ namespace MarketplaceBackend.Services
         }
         public List<Item> GetItems()
         {
-            return _userDbContext.Items.ToList();
+            return _userDbContext.Items.Include(c=> c.User).ToList();
         }
 
         public void Delete(int id)
@@ -41,6 +41,7 @@ namespace MarketplaceBackend.Services
             };
             _userDbContext.Items.Add(item);
             _userDbContext.SaveChanges();
+            //return _userDbContext.Items.Include(c=> c.User).FirstOrDefault(p => p.Id == item.Id);
             return item;
         }
 

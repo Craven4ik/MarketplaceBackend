@@ -19,13 +19,13 @@ namespace MarketplaceBackend.Controllers
             _itemService = itemService;
         }
 
-        [HttpGet]
+        [HttpGet("GetItems")]
         public List<Item> GetItems()
         {
             return _itemService.GetItems();
         }
 
-        [HttpDelete]
+        [HttpDelete("DeleteItem")]
         public void Delete(int id)
         {
             _itemService.Delete(id);
@@ -37,7 +37,7 @@ namespace MarketplaceBackend.Controllers
             return _itemService.CreateItem(_item);
         }
 
-        [HttpPost]
+        [HttpPost("UpdateItem")]
         public Item UpdateItem(ItemDTO _item)
         {
             return _itemService.UpdateItem(_item);

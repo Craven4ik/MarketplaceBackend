@@ -10,7 +10,7 @@ namespace MarketplaceBackend.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    //[Authorize]
+    [Authorize]
     public class UserController : Controller
     {
         private readonly IUserService _userService;
@@ -23,8 +23,7 @@ namespace MarketplaceBackend.Controllers
         [HttpGet("FindByEmail")]
         public User FindUserByEmail([FromQuery] string email)
         {
-            var user = _userService.FindUserByEmail(email);
-            return user;
+            return _userService.FindUserByEmail(email);
         }
     }
 }

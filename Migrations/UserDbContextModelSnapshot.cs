@@ -267,7 +267,7 @@ namespace MarketplaceBackend.Migrations
                 {
                     b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUser");
 
-                    b.HasDiscriminator().HasValue("User");
+                    //b.HasDiscriminator().HasValue("User");
                 });
 
             modelBuilder.Entity("MarketPlace.Models.Item", b =>

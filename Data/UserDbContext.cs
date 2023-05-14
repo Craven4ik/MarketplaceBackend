@@ -14,7 +14,7 @@ namespace MarketplaceBackend.Data
             //Database.EnsureCreated();
         }
 
-        public DbSet<User> Users { get; set; }
+        public DbSet<IdentityUser> Users { get; set; }
         public DbSet<Item> Items { get; set; }
     }
 }
