@@ -19,6 +19,7 @@ namespace MarketplaceBackend.Services
             var user = _userDbContext.Users.FirstOrDefault(p => p.Email == Email);
             return new User
             {
+                Id = user.Id,
                 UserName = user.UserName,
                 Email = user.Email,
             };

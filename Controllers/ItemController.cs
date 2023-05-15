@@ -37,7 +37,7 @@ namespace MarketplaceBackend.Controllers
             return _itemService.CreateItem(_item);
         }
 
-        [HttpPost("UpdateItem")]
+        [HttpPut("UpdateItem")]
         public Item UpdateItem(ItemDTO _item)
         {
             return _itemService.UpdateItem(_item);

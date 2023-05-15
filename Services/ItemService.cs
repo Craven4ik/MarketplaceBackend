@@ -18,7 +18,7 @@ namespace MarketplaceBackend.Services
         }
         public List<Item> GetItems()
         {
-            return _userDbContext.Items.Include(c=> c.User).ToList();
+            return _userDbContext.Items.ToList();
         }
 
         public void Delete(int id)
@@ -30,6 +30,8 @@ namespace MarketplaceBackend.Services
 
         public Item CreateItem(ItemDTO _item)
         {
+            //var newUser = _userService.FindUserByEmail(_item.OwnerEmail);
+            _userDbContext.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
             var item = new Item
             {
                 Name = _item.Name,
@@ -40,8 +42,8 @@ namespace MarketplaceBackend.Services
                 User = _userService.FindUserByEmail(_item.OwnerEmail)
             };
             _userDbContext.Items.Add(item);
+            _userDbContext.Entry(item.User).State = EntityState.Unchanged;
             _userDbContext.SaveChanges();
-            //return _userDbContext.Items.Include(c=> c.User).FirstOrDefault(p => p.Id == item.Id);
             return item;
         }
 
@@ -49,12 +51,13 @@ namespace MarketplaceBackend.Services
         {
             var item = new Item
             {
+                Id = _item.Id,
                 Name = _item.Name,
                 Price = _item.Price,
                 Image = _item.Image,
                 Description = _item.Description,
                 OwnerEmail = _item.OwnerEmail,
-                User = _userService.FindUserByEmail(_item.OwnerEmail)
+                //User = _userService.FindUserByEmail(_item.OwnerEmail),
             };
             _userDbContext.Items.Update(item);
             _userDbContext.SaveChanges();

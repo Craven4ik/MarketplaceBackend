@@ -1,12 +1,9 @@
 using MarketPlace.Helpers;
-using MarketPlace.Models;
-using MarketplaceBackend.Config;
 using MarketplaceBackend.Data;
 using MarketplaceBackend.Services;
 using MarketplaceBackend.Services.IServices;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
@@ -19,9 +16,12 @@ var builder = WebApplication.CreateBuilder(args);
 var connectionStringUsers = builder.Configuration.GetConnectionString("DB");
 builder.Services.AddDbContext<UserDbContext>(options => options.UseNpgsql(connectionStringUsers));
 builder.Services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<UserDbContext>();
-builder.Services.AddScoped<Microsoft.EntityFrameworkCore.ModelBuilder>();
+builder.Services.AddScoped<ModelBuilder>();
+//builder.Services.AddScoped<DbContext, UserDbContext>();
 builder.Services.AddScoped<IItemService, ItemService>();
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IOrderService, OrderService>();
+builder.Services.AddScoped<IOrderItemService, OrderItemService>();
 
 var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 builder.Services.AddCors(options =>

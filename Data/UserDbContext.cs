@@ -1,4 +1,5 @@
 ﻿using MarketPlace.Models;
+using MarketplaceBackend.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -16,5 +17,7 @@ namespace MarketplaceBackend.Data
 
         public DbSet<IdentityUser> Users { get; set; }
         public DbSet<Item> Items { get; set; }
+        public DbSet<Order> Orders { get; set; }
+        public DbSet<OrderItem> OrderItems { get; set; }
     }
 }
