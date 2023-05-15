@@ -30,10 +30,24 @@ public class OrderService : IOrderService
         _userDbContext.Orders.Remove(order);
         _userDbContext.SaveChanges();
     }
-
-    public List<Order> GetList()
+    public Order GetCurrentByUserID(Guid userID)
+        => _userDbContext.Orders.FirstOrDefault(c => c.UserID == userID && c.State == StateOrder.InProgress);
+    public List<Order> GetList(OrderFilter filter)
     {
-        return _userDbContext.Orders.Include(c => c.OrderItems).ToList();
+        var query = _userDbContext.Orders.Include(c => c.OrderItems).AsNoTracking();
+
+        if(filter.UserID.HasValue)
+            query = query.Where(c=> c.UserID == filter.UserID);
+
+        if (filter.State.HasValue)
+            query = query.Where(c => c.State == filter.State);
+
+        return _userDbContext.Orders.ToList();
+    }
+
+    public bool IsExistsByUserIDInProgress(Guid userID)
+    {
+        return _userDbContext.Orders.Any(c=> c.UserID == userID && c.State == StateOrder.InProgress);
     }
 
     public Order UpdateOrder(OrderDTO order)
@@ -45,7 +59,7 @@ public class OrderService : IOrderService
         return _userDbContext.Orders.Include(c => c.OrderItems).FirstOrDefault(c => c.ID == newOrder.ID);
     }
 
-    public List<Order> FindOrderByUserID(Guid userID)
+    public List<Order> GetListByUserID(Guid userID)
     {
         return _userDbContext.Orders.Where(p => p.UserID == userID).ToList();
     }

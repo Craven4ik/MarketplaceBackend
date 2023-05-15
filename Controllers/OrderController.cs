@@ -18,9 +18,13 @@ public class OrderController : ControllerBase
         _orderService = orderService;
     }
 
+    [HttpGet("{userID}")]
+    public Order GetList([FromRoute] Guid userID)
+        => _orderService.GetCurrentByUserID(userID);
+
     [HttpGet]
-    public List<Order> GetList()
-        => _orderService.GetList();
+    public List<Order> GetList([FromQuery] OrderFilter filter)
+        => _orderService.GetList(filter);
 
     [HttpDelete("{id}")]
     public void Delete([FromRoute] int id)

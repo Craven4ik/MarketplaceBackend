@@ -2,38 +2,36 @@
 using MarketplaceBackend.Models;
 using MarketplaceBackend.Services.IServices;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-namespace MarketplaceBackend.Controllers
+namespace MarketplaceBackend.Controllers;
+
+[ApiController]
+[Route("api/[controller]")]
+[Authorize]
+public class OrderItemController : Controller
 {
-    [ApiController]
-    [Route("api/[controller]")]
-    [Authorize]
-    public class OrderItemController : Controller
+    private readonly IOrderItemService _orderItemService;
+
+    public OrderItemController(IOrderItemService orderItemService)
     {
-        private readonly IOrderItemService _orderItemService;
-
-        public OrderItemController(IOrderItemService orderItemService)
-        {
-            _orderItemService = orderItemService;
-        }
-
-        [HttpGet]
-        public List<OrderItem> GetList()
-            => _orderItemService.GetList();
-
-        [HttpDelete("{id}")]
-        public void Delete([FromRoute] int id)
-            => _orderItemService.Delete(id);
-        
-
-        [HttpPost]
-        public OrderItem Create(OrderItemDTO orderItem)
-        => _orderItemService.CreateOrderItem(orderItem);
-
-        [HttpPut("{id}")]
-        public OrderItem Update(OrderItemDTO orderItem)
-        => _orderItemService.UpdateOrderItem(orderItem);
+        _orderItemService = orderItemService;
     }
+
+    [HttpGet]
+    public List<OrderItem> GetList()
+        => _orderItemService.GetList();
+
+    [HttpDelete("{id}")]
+    public void Delete([FromRoute] int id)
+        => _orderItemService.Delete(id);
+    
+
+    [HttpPost]
+    public OrderItem Create(OrderItemDTO orderItem)
+    => _orderItemService.CreateOrderItem(orderItem);
+
+    [HttpPut("{id}")]
+    public OrderItem Update(OrderItemDTO orderItem)
+    => _orderItemService.UpdateOrderItem(orderItem);
 }

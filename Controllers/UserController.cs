@@ -1,27 +1,22 @@
 ﻿using MarketPlace.Models;
-using MarketplaceBackend.Services;
 using MarketplaceBackend.Services.IServices;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System.ComponentModel.DataAnnotations;
 
-namespace MarketplaceBackend.Controllers
+namespace MarketplaceBackend.Controllers;
+
+[ApiController]
+[Route("api/[controller]")]
+//[Authorize]
+public class UserController : Controller
 {
-    [ApiController]
-    [Route("api/[controller]")]
-    //[Authorize]
-    public class UserController : Controller
+    private readonly IUserService _userService;
+
+    public UserController(IUserService userService)
     {
-        private readonly IUserService _userService;
-
-        public UserController(IUserService userService)
-        {
-            _userService = userService;
-        }
-
-        [HttpGet("FindByEmail")]
-        public User FindUserByEmail([FromQuery] string email)
-        => _userService.FindUserByEmail(email);
+        _userService = userService;
     }
+
+    [HttpGet("FindByEmail")]
+    public User FindUserByEmail([FromQuery] string email)
+    => _userService.FindUserByEmail(email);
 }
