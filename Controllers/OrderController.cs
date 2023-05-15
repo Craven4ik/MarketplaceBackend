@@ -3,12 +3,13 @@ using MarketplaceBackend.Models;
 using MarketplaceBackend.Services.IServices;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
 
 namespace MarketplaceBackend.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-[Authorize]
+//[Authorize]
 public class OrderController : ControllerBase
 {
     private readonly IOrderService _orderService;
@@ -19,7 +20,7 @@ public class OrderController : ControllerBase
     }
 
     [HttpGet("{userID}")]
-    public Order GetList([FromRoute] Guid userID)
+    public Order GetList([FromRoute] string userID)
         => _orderService.GetCurrentByUserID(userID);
 
     [HttpGet]
@@ -36,5 +37,17 @@ public class OrderController : ControllerBase
 
     [HttpPut("{id}")]
     public Order Update(OrderDTO order)
-        => _orderService.UpdateOrder(order); 
+        => _orderService.UpdateOrder(order);
+
+    public class asdsad
+    {
+        public string UserID { get; set; }
+        public int ItemID { get; set; }
+    }
+
+    [HttpPost("AddToCart")]
+    public void AddToCart([FromBody] asdsad asd)
+    {
+        _orderService.AddToCart(asd.UserID, asd.ItemID);
+    }
 }

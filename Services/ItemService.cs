@@ -60,4 +60,19 @@ public class ItemService : IItemService
             OwnerEmail = dto.OwnerEmail,
             User = _userService.FindUserByEmail(dto.OwnerEmail),
         };
+
+    public Item FindItemById(int Id)
+    {
+        var item = _userDbContext.Items.Include(c => c.User).FirstOrDefault(u => u.Id == Id);
+        return new Item
+        {
+            Id = item.Id,
+            Name = item.Name,
+            Price = item.Price,
+            Image = item.Image,
+            Description = item.Description,
+            OwnerEmail = item.OwnerEmail,
+            User = item.User,
+        };
+    }
 }

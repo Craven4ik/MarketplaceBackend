@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace MarketplaceBackend.Migrations
 {
     [DbContext(typeof(UserDbContext))]
-    [Migration("20230515003911_first")]
+    [Migration("20230515175325_first")]
     partial class first
     {
         /// <inheritdoc />
@@ -73,9 +73,6 @@ namespace MarketplaceBackend.Migrations
 
                     b.Property<int>("State")
                         .HasColumnType("integer");
-
-                    b.Property<Guid>("UserID")
-                        .HasColumnType("uuid");
 
                     b.Property<string>("UserId")
                         .IsRequired()

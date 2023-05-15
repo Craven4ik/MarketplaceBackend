@@ -16,10 +16,11 @@ public class OrderConfiguration : IEntityTypeConfiguration<Order>
 
         builder.HasOne(c => c.User)
             .WithMany()
-            .HasForeignKey(c => c.UserID);
+            .HasForeignKey(c => c.UserId);
+            //.HasPrincipalKey(c => c.Id);
 
         builder.HasMany(c=> c.OrderItems)
-            .WithOne(c=> c.Order)
+            .WithOne()
             .HasForeignKey(c=> c.OrderID)
             .OnDelete(DeleteBehavior.Cascade);
     }

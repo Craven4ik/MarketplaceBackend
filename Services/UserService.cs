@@ -22,4 +22,15 @@ public class UserService : IUserService
             Email = user.Email,
         };
     }
+
+    public User FindUserById(string Id)
+    {
+        var user = _userDbContext.Users.FirstOrDefault(u => u.Id == Id);
+        return new User
+        {
+            Id = user.Id,
+            UserName = user.UserName,
+            Email = user.Email
+        };
+    }
 }

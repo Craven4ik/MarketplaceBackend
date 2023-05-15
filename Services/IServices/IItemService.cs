@@ -9,5 +9,6 @@ namespace MarketplaceBackend.Services.IServices
         void Delete(int id);
         Item CreateItem(ItemDTO _item);
         Item UpdateItem(ItemDTO _item);
+        Item FindItemById(int Id);
     }
 }

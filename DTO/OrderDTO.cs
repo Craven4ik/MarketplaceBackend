@@ -6,7 +6,7 @@ namespace MarketplaceBackend.DTO
     public class OrderDTO
     {
         public int ID { get; init; }
-        public Guid UserID { get; set; }
+        public string UserID { get; set; }
         public StateOrder State { get; set; } = StateOrder.InProgress;
         public List<OrderItemDTO> OrderItems { get; set; }
     }
