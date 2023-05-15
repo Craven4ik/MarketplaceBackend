@@ -3,7 +3,6 @@ using MarketplaceBackend.Models;
 using MarketplaceBackend.Services.IServices;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
 
 namespace MarketplaceBackend.Controllers;
 
@@ -49,5 +48,11 @@ public class OrderController : ControllerBase
     public void AddToCart([FromBody] asdsad asd)
     {
         _orderService.AddToCart(asd.UserID, asd.ItemID);
+    }
+
+    [HttpGet("GetOrdersWithFilter")]
+    public List<Order> GetOrders([FromQuery]OrderFilter orderFilter)
+    {
+        return _orderService.GetList(orderFilter);
     }
 }

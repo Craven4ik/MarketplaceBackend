@@ -45,14 +45,15 @@ public class OrderService : IOrderService
     public List<Order> GetList(OrderFilter filter)
     {
         var query = _userDbContext.Orders.Include(c => c.OrderItems).AsNoTracking();
+        //var query = _userDbContext.Orders.AsNoTracking();
 
-        if(filter.UserID != null)
-            query = query.Where(c=> c.User.Id == filter.UserID);
+        if (filter.UserID != null)
+            query = query.Where(c=> c.UserId.Equals(filter.UserID));
 
         if (filter.State.HasValue)
             query = query.Where(c => c.State == filter.State);
 
-        return _userDbContext.Orders.ToList();
+        return query.ToList();
     }
 
     public bool IsExistsByUserIDInProgress(string userID)

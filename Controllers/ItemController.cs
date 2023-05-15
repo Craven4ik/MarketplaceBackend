@@ -1,5 +1,7 @@
 ﻿using MarketPlace.Models;
 using MarketplaceBackend.DTO;
+using MarketplaceBackend.Models;
+using MarketplaceBackend.Services;
 using MarketplaceBackend.Services.IServices;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -36,4 +38,10 @@ public class ItemController : Controller
     [HttpPut("UpdateItem")]
     public Item UpdateItem(ItemDTO _item)
         => _itemService.UpdateItem(_item);
+
+    [HttpGet("GetItemById")]
+    public Item GetItemById([FromQuery] int id)
+    {
+        return _itemService.FindItemById(id);
+    }
 }
