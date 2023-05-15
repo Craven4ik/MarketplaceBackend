@@ -15,6 +15,7 @@ public class ItemConfiguration : IEntityTypeConfiguration<Item>
         builder.HasOne(c => c.User)
             .WithMany(c => c.Items)
             //.HasForeignKey(p => p.UserId);
-            .HasPrincipalKey(x => x.Id);
+            .HasPrincipalKey(x => x.Id)
+            .OnDelete(DeleteBehavior.SetNull);
     }
 }
