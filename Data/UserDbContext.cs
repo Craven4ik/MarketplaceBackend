@@ -4,20 +4,19 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
-namespace MarketplaceBackend.Data
-{
-    public class UserDbContext : IdentityDbContext<IdentityUser>
-    {
-        public UserDbContext(DbContextOptions<UserDbContext> options, ModelBuilder modelBuilder)
-            : base(options)
-        {
-            modelBuilder.ApplyConfigurationsFromAssembly(GetType().Assembly);
-            //Database.EnsureCreated();
-        }
+namespace MarketplaceBackend.Data;
 
-        public DbSet<IdentityUser> Users { get; set; }
-        public DbSet<Item> Items { get; set; }
-        public DbSet<Order> Orders { get; set; }
-        public DbSet<OrderItem> OrderItems { get; set; }
+public class UserDbContext : IdentityDbContext<IdentityUser>
+{
+    public UserDbContext(DbContextOptions<UserDbContext> options, ModelBuilder modelBuilder)
+        : base(options)
+    {
+        modelBuilder.ApplyConfigurationsFromAssembly(GetType().Assembly);
+        //Database.EnsureCreated();
     }
+
+    public DbSet<IdentityUser> Users { get; set; }
+    public DbSet<Item> Items { get; set; }
+    public DbSet<Order> Orders { get; set; }
+    public DbSet<OrderItem> OrderItems { get; set; }
 }

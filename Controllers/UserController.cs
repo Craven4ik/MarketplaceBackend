@@ -22,8 +22,6 @@ namespace MarketplaceBackend.Controllers
 
         [HttpGet("FindByEmail")]
         public User FindUserByEmail([FromQuery] string email)
-        {
-            return _userService.FindUserByEmail(email);
-        }
+        => _userService.FindUserByEmail(email);
     }
 }

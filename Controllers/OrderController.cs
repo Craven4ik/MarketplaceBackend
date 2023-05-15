@@ -6,8 +6,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace MarketplaceBackend.Controllers;
 
-[ApiController]
 [Route("api/[controller]")]
+[ApiController]
 [Authorize]
 public class OrderController : ControllerBase
 {
@@ -20,25 +20,17 @@ public class OrderController : ControllerBase
 
     [HttpGet]
     public List<Order> GetList()
-    {
-        return _orderService.GetList();
-    }
+        => _orderService.GetList();
 
     [HttpDelete("{id}")]
     public void Delete([FromRoute] int id)
-    {
-        _orderService.Delete(id);
-    }
+        => _orderService.Delete(id);
 
     [HttpPost]
     public Order Create(OrderDTO order)
-    {
-        return _orderService.CreateOrder(order);
-    }
+        => _orderService.CreateOrder(order);
 
     [HttpPut("{id}")]
     public Order Update(OrderDTO order)
-    {
-        return _orderService.UpdateOrder(order);
-    }
+        => _orderService.UpdateOrder(order); 
 }

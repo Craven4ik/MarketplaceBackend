@@ -4,64 +4,58 @@ using MarketplaceBackend.DTO;
 using MarketplaceBackend.Services.IServices;
 using Microsoft.EntityFrameworkCore;
 
-namespace MarketplaceBackend.Services
+namespace MarketplaceBackend.Services;
+
+public class ItemService : IItemService
 {
-    public class ItemService : IItemService
+    private readonly UserDbContext _userDbContext;
+    private readonly IUserService _userService;
+
+    public ItemService(UserDbContext userDbContext, IUserService userService)
     {
-        private readonly UserDbContext _userDbContext;
-        private readonly IUserService _userService;
-
-        public ItemService(UserDbContext userDbContext, IUserService userService)
-        {
-            _userDbContext = userDbContext;
-            _userService = userService;
-        }
-        public List<Item> GetItems()
-        {
-            return _userDbContext.Items.ToList();
-        }
-
-        public void Delete(int id)
-        {
-            var item = _userDbContext.Items.FirstOrDefault(p => p.Id == id);
-            _userDbContext.Items.Remove(item);
-            _userDbContext.SaveChanges();
-        }
-
-        public Item CreateItem(ItemDTO _item)
-        {
-            //var newUser = _userService.FindUserByEmail(_item.OwnerEmail);
-            _userDbContext.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
-            var item = new Item
-            {
-                Name = _item.Name,
-                Price = _item.Price,
-                Image = _item.Image,
-                Description = _item.Description,
-                OwnerEmail = _item.OwnerEmail,
-                User = _userService.FindUserByEmail(_item.OwnerEmail)
-            };
-            _userDbContext.Items.Add(item);
-            _userDbContext.Entry(item.User).State = EntityState.Unchanged;
-            _userDbContext.SaveChanges();
-            return item;
-        }
-
-        public Item UpdateItem(ItemDTO _item)
-        {
-            var item = new Item
-            {
-                Id = _item.Id,
-                Name = _item.Name,
-                Price = _item.Price,
-                Image = _item.Image,
-                Description = _item.Description,
-                OwnerEmail = _item.OwnerEmail,
-                //User = _userService.FindUserByEmail(_item.OwnerEmail),
-            };
-            _userDbContext.Items.Update(item);
-            _userDbContext.SaveChanges();
-            return item;
-        }
+        _userDbContext = userDbContext;
+        _userService = userService;
     }
+    public List<Item> GetItems()
+    {
+        return _userDbContext.Items.ToList();
+    }
+
+    public void Delete(int id)
+    {
+        var item = _userDbContext.Items.FirstOrDefault(p => p.Id == id);
+        _userDbContext.Items.Remove(item);
+        _userDbContext.SaveChanges();
+    }
+
+    public Item CreateItem(ItemDTO _item)
+    {
+        //var newUser = _userService.FindUserByEmail(_item.OwnerEmail);
+        _userDbContext.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
+        var item = Map(_item);
+        _userDbContext.Items.Add(item);
+        _userDbContext.Entry(item.User).State = EntityState.Unchanged;
+        _userDbContext.SaveChanges();
+        return item;
+    }
+
+    public Item UpdateItem(ItemDTO dto)
+    {
+        var item = Map(dto); 
+        _userDbContext.Items.Update(item);
+        _userDbContext.SaveChanges();
+        return item;
+    }
+
+    public Item Map(ItemDTO dto)
+        => new Item
+        {
+            Id = dto.Id,
+            Name = dto.Name,
+            Price = dto.Price,
+            Image = dto.Image,
+            Description = dto.Description,
+            OwnerEmail = dto.OwnerEmail,
+            //User = _userService.FindUserByEmail(dto.OwnerEmail),
+        };
 }

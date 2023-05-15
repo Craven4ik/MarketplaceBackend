@@ -10,6 +10,5 @@ namespace MarketplaceBackend.Services.IServices
         void Delete(int id);
         Order CreateOrder(OrderDTO order);
         Order UpdateOrder(OrderDTO order);
-        Order FindOrderByEmail(Guid UserID);
     }
 }

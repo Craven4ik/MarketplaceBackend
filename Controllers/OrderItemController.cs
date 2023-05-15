@@ -21,26 +21,19 @@ namespace MarketplaceBackend.Controllers
 
         [HttpGet]
         public List<OrderItem> GetList()
-        {
-            return _orderItemService.GetList();
-        }
+            => _orderItemService.GetList();
 
         [HttpDelete("{id}")]
         public void Delete([FromRoute] int id)
-        {
-            _orderItemService.Delete(id);
-        }
+            => _orderItemService.Delete(id);
+        
 
         [HttpPost]
         public OrderItem Create(OrderItemDTO orderItem)
-        {
-            return _orderItemService.CreateOrderItem(orderItem);
-        }
+        => _orderItemService.CreateOrderItem(orderItem);
 
         [HttpPut("{id}")]
         public OrderItem Update(OrderItemDTO orderItem)
-        {
-            return _orderItemService.UpdateOrderItem(orderItem);
-        }
+        => _orderItemService.UpdateOrderItem(orderItem);
     }
 }
