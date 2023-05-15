@@ -41,8 +41,10 @@ public class ItemService : IItemService
 
     public Item UpdateItem(ItemDTO dto)
     {
+        _userDbContext.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
         var item = Map(dto); 
         _userDbContext.Items.Update(item);
+        _userDbContext.Entry(item.User).State = EntityState.Unchanged;
         _userDbContext.SaveChanges();
         return item;
     }
@@ -56,6 +58,6 @@ public class ItemService : IItemService
             Image = dto.Image,
             Description = dto.Description,
             OwnerEmail = dto.OwnerEmail,
-            //User = _userService.FindUserByEmail(dto.OwnerEmail),
+            User = _userService.FindUserByEmail(dto.OwnerEmail),
         };
 }
