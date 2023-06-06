@@ -23,4 +23,8 @@ public class UserController : Controller
     [HttpGet("FindUserIdByEmail")]
     public string FindUserIdByEmail([FromQuery] string email)
         => _userService.FindUserIdByEmail(email);
+
+    [HttpGet("FindUserById")]
+    public User FindUserById([FromQuery] string id)
+        => _userService.FindUserById(id);
 }
