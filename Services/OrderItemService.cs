@@ -2,6 +2,7 @@
 using MarketplaceBackend.DTO;
 using MarketplaceBackend.Models;
 using MarketplaceBackend.Services.IServices;
+using Microsoft.EntityFrameworkCore;
 
 namespace MarketplaceBackend.Services;
 
@@ -30,9 +31,8 @@ public class OrderItemService : IOrderItemService
     }
 
     public List<OrderItem> GetList()
-    {
-        return _userDbContext.OrderItems.ToList();
-    }
+        => _userDbContext.OrderItems.ToList();
+    
 
     public OrderItem UpdateOrderItem(OrderItemDTO orderItem)
     {
@@ -59,4 +59,6 @@ public class OrderItemService : IOrderItemService
         Count = orderItem.Count
     };
 
+    public int OrderPrice(int id)
+        => _userDbContext.OrderItems.Where(c => c.OrderID == id).Sum(c => c.Count * c.Product.Price);
 }

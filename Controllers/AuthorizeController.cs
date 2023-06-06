@@ -1,13 +1,10 @@
 ﻿using MarketPlace.Helpers;
-using MarketPlace.Models;
 using MarketplaceBackend.DTO;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
-using System.Data.SqlTypes;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 
@@ -97,27 +94,22 @@ namespace MarketPlace.Controllers
         }
 
         [HttpGet("CurrentUser")]
-        //[Authorize]
+        [Authorize]
         public IActionResult GetCurUser()
         {
             var token = _httpContextAccessor.HttpContext.Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
-            Console.WriteLine(token);
 
-            //_userManager.GetUserAsync(HttpContext.User);
             var handler = new JwtSecurityTokenHandler();
             var jwtToken = handler.ReadJwtToken(token);
 
             var identity = new ClaimsIdentity(jwtToken.Claims);
             var user = new ClaimsPrincipal(identity);
 
-            Console.WriteLine(user);
-
-            // Здесь user содержит информацию об авторизованном пользователе
             return Ok(user);
         }
 
         [HttpGet("CurUserId")]
-        //[Authorize]
+        [Authorize]
         public async Task<string> GetUserId(string email)
         {
             var user = await _userManager.FindByEmailAsync(email);

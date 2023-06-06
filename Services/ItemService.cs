@@ -17,9 +17,7 @@ public class ItemService : IItemService
         _userService = userService;
     }
     public List<Item> GetItems()
-    {
-        return _userDbContext.Items.ToList();
-    }
+    => _userDbContext.Items.ToList();
 
     public void Delete(int id)
     {
@@ -30,7 +28,6 @@ public class ItemService : IItemService
 
     public Item CreateItem(ItemDTO _item)
     {
-        //var newUser = _userService.FindUserByEmail(_item.OwnerEmail);
         _userDbContext.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
         var item = Map(_item);
         _userDbContext.Items.Add(item);
@@ -63,7 +60,7 @@ public class ItemService : IItemService
 
     public Item FindItemById(int Id)
     {
-        var item = _userDbContext.Items.Include(c => c.User).FirstOrDefault(u => u.Id == Id);
+        var item = _userDbContext.Items.FirstOrDefault(u => u.Id == Id);
         return new Item
         {
             Id = item.Id,

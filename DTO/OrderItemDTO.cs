@@ -1,7 +1,4 @@
-﻿using MarketPlace.Models;
-using MarketplaceBackend.Models;
-
-namespace MarketplaceBackend.DTO
+﻿namespace MarketplaceBackend.DTO
 {
     public class OrderItemDTO
     {

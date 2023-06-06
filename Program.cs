@@ -17,7 +17,6 @@ var connectionStringUsers = builder.Configuration.GetConnectionString("DB");
 builder.Services.AddDbContext<UserDbContext>(options => options.UseNpgsql(connectionStringUsers));
 builder.Services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<UserDbContext>();
 builder.Services.AddScoped<ModelBuilder>();
-//builder.Services.AddScoped<DbContext, UserDbContext>();
 builder.Services.AddScoped<IItemService, ItemService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IOrderService, OrderService>();
@@ -29,7 +28,10 @@ builder.Services.AddCors(options =>
     options.AddPolicy(name: MyAllowSpecificOrigins,
             policy =>
             {
-                policy.WithOrigins("*")
+                policy.WithOrigins("*",
+                    "https://marketplace-backend-i22y.onrender.com",
+                    "https://marketplace-frontend-8c1u.onrender.com",
+                    "http://localhost:3000")
                     .AllowAnyHeader()
                     .AllowAnyMethod()
                     .AllowAnyOrigin();

@@ -9,4 +9,5 @@ public interface IOrderItemService
     void Delete(int id);
     OrderItem CreateOrderItem(OrderItemDTO orderItem);
     OrderItem UpdateOrderItem(OrderItemDTO orderItem);
+    int OrderPrice(int id);
 }

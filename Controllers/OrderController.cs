@@ -38,16 +38,10 @@ public class OrderController : ControllerBase
     public Order Update(OrderDTO order)
         => _orderService.UpdateOrder(order);
 
-    public class asdsad
-    {
-        public string UserID { get; set; }
-        public int ItemID { get; set; }
-    }
-
     [HttpPost("AddToCart")]
-    public void AddToCart([FromBody] asdsad asd)
+    public void AddToCart([FromBody] OrderInfo orderInfo)
     {
-        _orderService.AddToCart(asd.UserID, asd.ItemID);
+        _orderService.AddToCart(orderInfo.UserID, orderInfo.ItemID);
     }
 
     [HttpGet("GetOrdersWithFilter")]

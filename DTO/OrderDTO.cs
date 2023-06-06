@@ -1,5 +1,4 @@
-﻿using MarketPlace.Models;
-using MarketplaceBackend.Models;
+﻿using MarketplaceBackend.Models;
 
 namespace MarketplaceBackend.DTO
 {

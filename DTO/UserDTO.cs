@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace MarketplaceBackend.DTO
+﻿namespace MarketplaceBackend.DTO
 {
     public class UserDTO
     {

@@ -8,7 +8,7 @@ namespace MarketplaceBackend.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-[Authorize]
+//[Authorize]
 public class OrderItemController : Controller
 {
     private readonly IOrderItemService _orderItemService;
@@ -29,9 +29,13 @@ public class OrderItemController : Controller
 
     [HttpPost]
     public OrderItem Create(OrderItemDTO orderItem)
-    => _orderItemService.CreateOrderItem(orderItem);
+        => _orderItemService.CreateOrderItem(orderItem);
 
     [HttpPut("{id}")]
     public OrderItem Update(OrderItemDTO orderItem)
-    => _orderItemService.UpdateOrderItem(orderItem);
+        => _orderItemService.UpdateOrderItem(orderItem);
+
+    [HttpGet("GetPrice")]
+    public int GetOrderPrice([FromQuery] int id)
+        => _orderItemService.OrderPrice(id);
 }

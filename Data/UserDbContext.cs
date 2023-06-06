@@ -12,7 +12,6 @@ public class UserDbContext : IdentityDbContext<IdentityUser>
         : base(options)
     {
         modelBuilder.ApplyConfigurationsFromAssembly(GetType().Assembly);
-        //Database.EnsureCreated();
     }
 
     public DbSet<IdentityUser> Users { get; set; }

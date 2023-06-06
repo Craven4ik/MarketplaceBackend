@@ -1,5 +1,4 @@
-﻿using MarketPlace.Models;
-using MarketplaceBackend.Data;
+﻿using MarketplaceBackend.Data;
 using MarketplaceBackend.DTO;
 using MarketplaceBackend.Models;
 using MarketplaceBackend.Services.IServices;
@@ -11,18 +10,11 @@ public class OrderService : IOrderService
 {
     private readonly UserDbContext _userDbContext;
     private readonly IUserService _userService;
-    private readonly IItemService _itemService;
-    private readonly IOrderItemService _orderItemService;
 
-    public OrderService(UserDbContext userDbContext,
-        IUserService userService,
-        IOrderItemService orderItemService,
-        IItemService itemService)
+    public OrderService(UserDbContext userDbContext, IUserService userService)
     {
         _userDbContext = userDbContext;
         _userService = userService;
-        _orderItemService = orderItemService;
-        _itemService = itemService;
     }
 
     public Order CreateOrder(OrderDTO order)
@@ -42,10 +34,10 @@ public class OrderService : IOrderService
     }
     public Order GetCurrentByUserID(string userID)
         => _userDbContext.Orders.FirstOrDefault(c => c.User.Id == userID && c.State == StateOrder.InProgress);
+
     public List<Order> GetList(OrderFilter filter)
     {
         var query = _userDbContext.Orders.Include(c => c.OrderItems).AsNoTracking();
-        //var query = _userDbContext.Orders.AsNoTracking();
 
         if (filter.UserID != null)
             query = query.Where(c=> c.UserId.Equals(filter.UserID));
@@ -57,13 +49,13 @@ public class OrderService : IOrderService
     }
 
     public bool IsExistsByUserIDInProgress(string userID)
-    {
-        return _userDbContext.Orders.Any(c=> c.User.Id == userID && c.State == StateOrder.InProgress);
-    }
+        => _userDbContext.Orders.Any(c => c.User.Id == userID && c.State == StateOrder.InProgress);
 
     public Order UpdateOrder(OrderDTO order)
     {
+        _userDbContext.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
         var newOrder = Map(order);
+        _userDbContext.Attach(newOrder);
         _userDbContext.Orders.Update(newOrder);
         _userDbContext.SaveChanges();
 
@@ -71,33 +63,29 @@ public class OrderService : IOrderService
     }
 
     public List<Order> GetListByUserID(string userID)
-    {
-        return _userDbContext.Orders.Where(p => p.User.Id == userID).ToList();
-    }
+        => _userDbContext.Orders.Where(p => p.User.Id == userID).ToList();
 
     public Order GetByUserID(string userID)
-    {
-        return _userDbContext.Orders.Include(c => c.OrderItems).FirstOrDefault(c => c.UserId.Equals(userID));
-    }
+        => _userDbContext.Orders.Include(c => c.OrderItems).FirstOrDefault(c => c.UserId.Equals(userID));
 
     private Order Map(OrderDTO dto) =>
         new Order
         {
+            ID = dto.ID,
             User = _userService.FindUserById(dto.UserID),
             State = dto.State,
-            OrderItems = dto.OrderItems.Select(x => new OrderItem
-            {
-                OrderID = x.OrderID,
-                ProductID = x.ProductID,
-                Count = x.Count
-            })
-            .ToList() ?? new List<OrderItem>()
+            OrderItems = _userDbContext.OrderItems.Where(c => c.OrderID == dto.ID).ToList()
         };
 
     public void AddToCart(string UserId, int ItemId)
     {
         _userDbContext.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
-        var order = GetByUserID(UserId);
+
+        var order = GetList(new OrderFilter
+        {
+            UserID = UserId,
+            State = StateOrder.InProgress
+        }).FirstOrDefault();
 
         if (order != null)
         {
@@ -136,9 +124,6 @@ public class OrderService : IOrderService
                 OrderItems = new List<OrderItem>(),
             };
             newOrderItem.Order = newOrder;
-
-
-
             _userDbContext.Entry(newOrder.User).State = EntityState.Unchanged;
             newOrder.OrderItems.Add(newOrderItem);
             _userDbContext.Orders.Add(newOrder);

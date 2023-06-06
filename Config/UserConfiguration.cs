@@ -12,7 +12,6 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
 
         builder.HasMany(c => c.Items)
             .WithOne(c => c.User)
-            //.HasForeignKey(p => p.UserId)
             .HasPrincipalKey(x => x.Id);
     }
 }
