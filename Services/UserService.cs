@@ -29,12 +29,12 @@ public class UserService : IUserService
 
     public User FindUserById(string Id)
     {
-        return _userDbContext.Users.FirstOrDefault(u => u.Id == Id) as User;
-        //return new User
-        //{
-        //    Id = user.Id,
-        //    UserName = user.UserName,
-        //    Email = user.Email
-        //};
+        var user = _userDbContext.Users.FirstOrDefault(u => u.Id == Id);
+        return new User
+        {
+            Id = user.Id,
+            UserName = user.UserName,
+            Email = user.Email
+        };
     }
 }
