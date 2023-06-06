@@ -12,7 +12,7 @@ public class UserDbContext : IdentityDbContext<IdentityUser>
         : base(options)
     {
         Database.EnsureDeleted();
-        Database.EnsureCreated();
+        //Database.EnsureCreated();
         Database.Migrate();
         modelBuilder.ApplyConfigurationsFromAssembly(GetType().Assembly);
     }
