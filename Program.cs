@@ -90,13 +90,13 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
-app.UseCors("CorsPolicy");
-
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
 
 //app.UseCors(MyAllowSpecificOrigins);
+
+app.UseCors("CorsPolicy");
 
 app.UseAuthentication();
 app.UseAuthorization();
