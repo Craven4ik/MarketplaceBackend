@@ -22,23 +22,6 @@ builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IOrderService, OrderService>();
 builder.Services.AddScoped<IOrderItemService, OrderItemService>();
 
-//var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
-//builder.Services.AddCors(options =>
-//{
-//    options.AddPolicy(name: MyAllowSpecificOrigins,
-//            policy =>
-//            {
-//                policy.WithOrigins("*",
-//                    "https://marketplace-backend-i22y.onrender.com",
-//                    "https://marketplace-frontend-8c1u.onrender.com",
-//                    "http://localhost:3000")
-//                    .AllowAnyHeader()
-//                    .AllowAnyMethod()
-//                    .AllowAnyOrigin();
-//            }
-//        );
-//});
-
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("CorsPolicy",
@@ -46,7 +29,6 @@ builder.Services.AddCors(options =>
                     .AllowAnyOrigin()
                     .AllowAnyMethod()
                     .AllowAnyHeader()
-                    //.AllowCredentials()
                     );
 });
 
@@ -94,8 +76,6 @@ if (!app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
-
-//app.UseCors(MyAllowSpecificOrigins);
 
 app.UseCors("CorsPolicy");
 

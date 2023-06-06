@@ -1,13 +1,14 @@
 ﻿using MarketPlace.Models;
 using MarketplaceBackend.DTO;
 using MarketplaceBackend.Services.IServices;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MarketplaceBackend.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-//[Authorize]
+[Authorize]
 public class ItemController : Controller
 {
     private readonly IItemService _itemService;
