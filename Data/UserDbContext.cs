@@ -11,9 +11,8 @@ public class UserDbContext : IdentityDbContext<IdentityUser>
     public UserDbContext(DbContextOptions<UserDbContext> options, ModelBuilder modelBuilder)
         : base(options)
     {
-        Database.EnsureDeleted();
-        //Database.EnsureCreated();
-        Database.Migrate();
+        //Database.EnsureDeleted();
+        //Database.Migrate();
         modelBuilder.ApplyConfigurationsFromAssembly(GetType().Assembly);
     }
 
