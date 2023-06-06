@@ -22,21 +22,31 @@ builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IOrderService, OrderService>();
 builder.Services.AddScoped<IOrderItemService, OrderItemService>();
 
-var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
+//var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
+//builder.Services.AddCors(options =>
+//{
+//    options.AddPolicy(name: MyAllowSpecificOrigins,
+//            policy =>
+//            {
+//                policy.WithOrigins("*",
+//                    "https://marketplace-backend-i22y.onrender.com",
+//                    "https://marketplace-frontend-8c1u.onrender.com",
+//                    "http://localhost:3000")
+//                    .AllowAnyHeader()
+//                    .AllowAnyMethod()
+//                    .AllowAnyOrigin();
+//            }
+//        );
+//});
+
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy(name: MyAllowSpecificOrigins,
-            policy =>
-            {
-                policy.WithOrigins("*",
-                    "https://marketplace-backend-i22y.onrender.com",
-                    "https://marketplace-frontend-8c1u.onrender.com",
-                    "http://localhost:3000")
-                    .AllowAnyHeader()
+    options.AddPolicy("CorsPolicy",
+                builder => builder
+                    .AllowAnyOrigin()
                     .AllowAnyMethod()
-                    .AllowAnyOrigin();
-            }
-        );
+                    .AllowAnyHeader()
+                    .AllowCredentials());
 });
 
 builder.Services.Configure<JWTSettings>(builder.Configuration.GetSection("JWTSettings"));
@@ -80,11 +90,13 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
+app.UseCors("CorsPolicy");
+
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
 
-app.UseCors(MyAllowSpecificOrigins);
+//app.UseCors(MyAllowSpecificOrigins);
 
 app.UseAuthentication();
 app.UseAuthorization();
