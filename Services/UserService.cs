@@ -12,6 +12,10 @@ public class UserService : IUserService
     {
         _userDbContext = userDbContext;
     }
+
+    public string FindUserIdByEmail(string Email)
+        => _userDbContext.Users.FirstOrDefault(p => p.Email == Email).Id;
+
     public User FindUserByEmail(string Email)
     {
         var user = _userDbContext.Users.FirstOrDefault(p => p.Email == Email);
