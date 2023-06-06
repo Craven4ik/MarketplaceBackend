@@ -12,6 +12,7 @@ public class UserDbContext : IdentityDbContext<IdentityUser>
         : base(options)
     {
         Database.EnsureCreated();
+        Database.Migrate();
         modelBuilder.ApplyConfigurationsFromAssembly(GetType().Assembly);
     }
 
