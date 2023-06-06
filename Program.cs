@@ -46,7 +46,8 @@ builder.Services.AddCors(options =>
                     .AllowAnyOrigin()
                     .AllowAnyMethod()
                     .AllowAnyHeader()
-                    .AllowCredentials());
+                    //.AllowCredentials()
+                    );
 });
 
 builder.Services.Configure<JWTSettings>(builder.Configuration.GetSection("JWTSettings"));
